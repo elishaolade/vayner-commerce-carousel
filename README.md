@@ -1,6 +1,7 @@
 # Vayner Commerce Carousel
 
-## Available Scripts
+Working solution to assessment.
+
 
 In the project directory, you can run:
 

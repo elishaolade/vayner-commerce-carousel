@@ -15,6 +15,21 @@ const Carousel = (props) => {
         else {
             setMobile(!isMobile);
         }
+        function checkScreen(e) {
+            if(e.matches) {
+                setMobile(isMobile)
+                console.log('mobile')
+            }
+            else {
+                setMobile(!isMobile)
+                console.log('not mobile')
+            }
+        }
+        media.addEventListener('change', checkScreen);
+        const intervalId = setInterval(() => {
+            next()
+          }, 4000)
+          return () => clearInterval(intervalId)
     }, [])
     const next = () => {
         setIndex(index < limit - 1 ? index + 1 : 0);
@@ -22,6 +37,9 @@ const Carousel = (props) => {
     const prev = () => {
         setIndex(index > 0 ? index - 1 : limit - 1)
     };
+    const rotate = () => {
+        next();
+    }
 
     return(
         <div className="Carousel">
