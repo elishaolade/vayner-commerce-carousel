@@ -1,4 +1,6 @@
 import logo from './logo.svg';
+import prevIcon from './assets/arrow-left.svg';
+import prevRight from './assets/arrow-left.svg';
 import './App.css';
 import Carousel from './components/Carousel';
 import React, { useEffect } from 'react';

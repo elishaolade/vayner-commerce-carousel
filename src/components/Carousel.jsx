@@ -1,4 +1,6 @@
 import React, {useEffect} from 'react';
+import prevIcon from '.././assets/arrow-left.svg';
+import nextIcon from '.././assets/arrow-right.svg';
 import './Carousel.scss';
 
 const Carousel = (props) => {
@@ -6,7 +8,6 @@ const Carousel = (props) => {
     const [index, setIndex] = React.useState(0);
     const limit = props.data.length;
     useEffect(()=>{
-        console.log(limit);
         const media = window.matchMedia('(max-width: 600px)');
         if(media.matches){
             setMobile(isMobile);
@@ -17,11 +18,9 @@ const Carousel = (props) => {
     }, [])
     const next = () => {
         setIndex(index < limit - 1 ? index + 1 : 0);
-        console.log(index)
     };
     const prev = () => {
         setIndex(index > 0 ? index - 1 : limit - 1)
-        console.log(index)
     };
 
     return(
@@ -30,15 +29,14 @@ const Carousel = (props) => {
                 <div className="Carousel__slides" style={{ transform: `translateX(${index * -100}%)`}}>
                     {props.data.map((slide,index) => {
                         const background = { backgroundImage: isMobile ? `url(${slide.media.mobile})` : `url(${slide.media.desktop})` }
-                        console.log(background.backgroundImage);
                         return (
                             <div className="Slide" key={index} style={background}>
-                            <div className="Slide__inner">
+                            <div className={`${!isMobile? 'Slide__inner--' + slide.ctaPosition : 'Slide__inner'}`}>
                                 <div className="Slide__content-wrapper">
                                     <h1 className="Slide__title">{slide.title}</h1>
                                     { slide.heading && <h6 className="Slide__heading">{slide.heading}</h6> }
                                     { slide.subhead && <h6 className="Slide__subhead">{slide.subhead}</h6> }
-                                    <div className="Slide__cta-wrapper">
+                                    <div className={`Slide__cta-wrapper--${slide.cta.length > 1 ? 'double':'single'}`}>
                                     { slide.cta.map(cta => {
                                         return (
                                             <div className="Slide__cta">
@@ -57,8 +55,8 @@ const Carousel = (props) => {
                     })}
                 </div>
                 <div className="Carousel__controls">
-                    <button type="button" className="Carousel__prev" onClick={prev}>prev</button>
-                    <button type="button" className="Carousel__next" onClick={next}>next</button>
+                    <button type="button" className="Carousel__prev Carousel__btn" onClick={prev}><img src={prevIcon} alt="previous"/></button>
+                    <button type="button" className="Carousel__next Carousel__btn" onClick={next}><img src={nextIcon} alt="previous"/></button>
                 </div>
             </div>
         </div>

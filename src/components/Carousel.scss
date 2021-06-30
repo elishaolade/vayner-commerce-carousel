@@ -41,6 +41,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
         color: #FFF;
         text-decoration: none;
     }
+/*======== CUSTOM SCSS ========*/
 .Carousel {
     width: 100vw;
     height: 100vh;
@@ -62,14 +63,20 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
                 padding: 7rem 2rem;
                 align-self: end;
             }
+            &__content-wrapper {
+                max-width: 450px;
+            }
             &__title {
                 font-size: 2rem;
                 font-weight: 600;
                 text-transform: uppercase;
+                letter-spacing: 4px;
+                margin-bottom: 1.5rem;
             }
             &__heading {
-                margin: 1rem 0;
-                font-weight: 400;
+                margin: 1.5rem 0;
+                font-weight: 300;
+                font-size: .9rem;
             }
             &__cta-wrapper {
                 margin: 1rem 0;
@@ -80,6 +87,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
                 border: 1.5px solid #FFF;
                 margin-bottom: 1rem;
                 text-transform: uppercase;
+                text-align: center;
                 transition: .3s all ease-in-out;
                 &:hover {
                     background: #FFF;
@@ -88,16 +96,70 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
             }
         }
     }
-    &__controls {
+    &__btn {
         position: absolute;
-        bottom: 1rem;
-        left: 50%;
-        transform: translate(-50%, -2rem);
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border-style: none;
+    }
+    &__prev {
+        left: 2rem;
+    }
+    &__next {
+        right: 2rem;
     }
 }
 
 @media screen and (min-width: 768px) {
     .Slide {
         height: 700px;
+        &__inner {
+            display: flex;
+            align-items: center;
+            align-self: default;
+        }
+        &__inner {
+            &--left {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                text-align:left;
+                padding: 10rem 11rem;
+
+            }
+            &--center {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 10rem 11rem;
+            }
+            &--right {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                text-align: right;
+                padding: 10rem 11rem;
+            }
+        }
+        &__cta-wrapper {
+            &--double {
+                display: flex;
+                justify-content: space-between;
+                height: fit-content;
+            }
+        }
+        &__cta {
+            flex: 0 0 200px;
+        }
+        &__btn-wrapper {
+            max-width: 300px;
+        }
+        &__btn {
+            font-size: .85rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
     }
 }
