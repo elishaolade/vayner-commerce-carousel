@@ -18,11 +18,9 @@ const Carousel = (props) => {
         function checkScreen(e) {
             if(e.matches) {
                 setMobile(isMobile)
-                console.log('mobile')
             }
             else {
                 setMobile(!isMobile)
-                console.log('not mobile')
             }
         }
         media.addEventListener('change', checkScreen);
