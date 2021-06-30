@@ -1,0 +1,98 @@
+.Slide {
+    flex: 0 0 100%;
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    color: #FFF;
+    &__inner {
+        padding: 7rem 2rem;
+        align-self: end;
+    
+    }
+    &__content-wrapper {
+        max-width: 450px;
+    }
+    &__title {
+        font-size: 2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        margin-bottom: 1.5rem;
+    }
+    &__heading {
+        margin: 1.5rem 0;
+        font-weight: 300;
+        font-size: .9rem;
+    }
+    &__cta-wrapper {
+        margin: 1rem 0;
+    }
+    &__btn {
+        display: block;
+        padding: .85rem;
+        border: 1.5px solid #FFF;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        text-align: center;
+        transition: .3s all ease-in-out;
+        &:hover {
+            background: #FFF;
+            color: #000;
+        }
+    }
+}
+@media screen and (min-width: 768px) {
+    .Slide {
+        height: 700px;
+        &__inner {
+            display: flex;
+            align-items: center;
+            align-self: default;
+        }
+        &__inner {
+            &--left {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                text-align:left;
+                padding: 10rem 11rem;
+
+            }
+            &--center {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 10rem 11rem;
+            }
+            &--right {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                text-align: right;
+                padding: 10rem 11rem;
+            }
+        }
+        &__cta-wrapper {
+            &--double {
+                display: flex;
+                justify-content: space-between;
+                height: fit-content;
+            }
+        }
+        &__cta {
+            flex: 0 0 200px;
+        }
+        &__btn-wrapper {
+            max-width: 300px;
+        }
+        &__btn {
+            font-size: .85rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+    }
+}
