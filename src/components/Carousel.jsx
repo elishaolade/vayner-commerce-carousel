@@ -3,25 +3,24 @@ import prevIcon from '.././assets/arrow-left.svg';
 import nextIcon from '.././assets/arrow-right.svg';
 import './Carousel.scss';
 import Slide from './Slide';
+import {checkScreen} from '../utils/carousel-utils'
 
 const Carousel = (props) => {
+    const [backgroundType, setBackgroundType] = React.useState('mobile');
     const [current, setCurrent] = React.useState(0);
     const [transition, setTransition] = React.useState(true);
     const [direction, setDirection] = React.useState('');
     const [slides, setSlides] = React.useState([]);
 
     useEffect(()=>{
-        
-
+        handleResize();
         setSlides(props.data);
+        window.addEventListener('resize', handleResize)
     }, [props.data])
 
-    /**
-     * Handles direction change 
-     */
-    const next = () => {
-        setCurrent(current + 1);
-        console.log(current);
+    const handleResize = () => {
+        var mql = window.matchMedia('(max-width: 600px)');
+        setBackgroundType(checkScreen(mql));
     }
 
     const handleTranslation = () => {
@@ -62,17 +61,12 @@ const Carousel = (props) => {
         setTransition(true);
         setCurrent(current + 1);
         setDirection('next');
-        // console.log(`transition: ${transition}, current: ${current}, direction: ${direction}`);
-        // setTransition(true);
-        // console.log('next')
     };
 
     const handlePrev = () => {
         setTransition(true);
         setCurrent(current - 1);
         setDirection('prev');
-        // console.log(`transition: ${transition}, current: ${current}, direction: ${direction}`);
-        // console.log('prev')g
     };
 
     const translateVal = () => {
@@ -94,13 +88,14 @@ const Carousel = (props) => {
             };
         }
     }
-    console.log(carouselStyle());
+
     return(
         <div className="Carousel">
             <div className="Carousel__inner">
                 <div className="Carousel__slides" style={carouselStyle()} onTransitionEnd={handleTranslation}>
                     {slides.map((slide, index) => {
-                        return <Slide key={index} slide={slide}/>
+                        let background = backgroundType === 'mobile' ? slide.media.mobile:slide.media.desktop;
+                        return <Slide key={index} slide={slide} background={background}/>
                     })}
                 </div>
                 <div className="Carousel__controls">

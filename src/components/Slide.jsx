@@ -9,10 +9,8 @@ export const Slide = (props) => {
     const [subhead, setSubhead] = React.useState('');
     const [ctaPosition, setCtaPosition] = React.useState('');
     const [cta, setCta] = React.useState([]);
-    // { backgroundImage: isMobile ? `url(${slide.media.mobile})` : `url(${slide.media.desktop})` }
     useEffect(()=> {
         const media = window.matchMedia('(max-width: 600px)');
-        let scrnBg = isMobile ? props.slide.media.mobile : props.slide.media.desktop;
         setTitle(props.slide.title)
         setHeading(props.slide.heading);
         setSubhead(props.slide.subhead);
@@ -20,24 +18,13 @@ export const Slide = (props) => {
         setCtaPosition(props.slide.ctaPosition);
         if(media.matches){
             setMobile(isMobile);
-            setBackground(scrnBg);
         }
         else {
             setMobile(!isMobile);
-            setBackground(scrnBg);
         }
-        function checkScreen(e) {
-            if(e.matches) {
-                setMobile(isMobile)
-            }
-            else {
-                setMobile(!isMobile)
-            }
-        }
-        media.addEventListener('change', checkScreen);
     }, [props.slide]);
     return (
-        <div className="Slide" style={{backgroundImage: `url(${background})` }}>
+        <div className="Slide" style={{backgroundImage: `url(${props.background})` }}>
             {/* <div className={`${!isMobile? 'Slide__inner--' + ctaPosition : 'Slide__inner'}`}>
                 <div className="Slide__content-wrapper">
                     <h1 className="Slide__title">{title}</h1>
