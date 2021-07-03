@@ -47,9 +47,12 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     height: 100vh;
     overflow: hidden;
     position: relative;
+    transition: .3s all ease-in-out;
+    &__inner {
+        transition: .3s all ease-in-out;
+    }
     &__slides {
         display: flex;
-        transition: .3s all ease-in-out;
     }
     &__btn {
         position: absolute;

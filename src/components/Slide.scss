@@ -5,7 +5,8 @@
     height: 100vh;
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: 50% 50%;
+    background-position: bottom 100% left 50%;
+    background-attachment: fixed;
     color: #FFF;
     &__inner {
         padding: 7rem 2rem;
@@ -46,7 +47,7 @@
 }
 @media screen and (min-width: 768px) {
     .Slide {
-        height: 700px;
+        height: 100vh;
         &__inner {
             display: flex;
             align-items: center;

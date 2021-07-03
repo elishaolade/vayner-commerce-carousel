@@ -5,48 +5,107 @@ import './Carousel.scss';
 import Slide from './Slide';
 
 const Carousel = (props) => {
-    const [isMobile, setMobile] = React.useState(true);
-    const [index, setIndex] = React.useState(0);
-    const limit = props.data.length;
-    useEffect(()=>{
-        const media = window.matchMedia('(max-width: 600px)');
+    const [current, setCurrent] = React.useState(0);
+    const [transition, setTransition] = React.useState(true);
+    const [direction, setDirection] = React.useState('');
+    const [slides, setSlides] = React.useState([]);
 
-        if(media.matches){
-            setMobile(isMobile);
+    useEffect(()=>{
+        
+
+        setSlides(props.data);
+    }, [props.data])
+
+    /**
+     * Handles direction change 
+     */
+    const next = () => {
+        setCurrent(current + 1);
+        console.log(current);
+    }
+
+    const handleTranslation = () => {
+        switch(direction) {
+            case 'next':
+                validateNextSlides();
+                break;
+            case 'prev':
+                validatePrevSlides();
+                break;
+            default:
+                break;
+        }
+    }
+
+    const validateNextSlides = () => {
+        let _current = current;
+        let length = slides.length;
+        _current -= 1;
+        const _slides = [...slides, ...slides.slice(0,1)].slice(-length);
+        console.log(_slides);
+        setTransition(false);
+        setCurrent(_current);
+        setSlides(_slides);
+    }
+
+    const validatePrevSlides = () => {
+        let _current = current;
+        let length = slides.length;
+        _current += 1;
+        const _slides = [...slides.slice(-1), ...slides].slice(0, length);
+        setTransition(false);
+        setCurrent(_current);
+        setSlides(_slides);
+    }
+
+    const handleNext = () => {
+        setTransition(true);
+        setCurrent(current + 1);
+        setDirection('next');
+        // console.log(`transition: ${transition}, current: ${current}, direction: ${direction}`);
+        // setTransition(true);
+        // console.log('next')
+    };
+
+    const handlePrev = () => {
+        setTransition(true);
+        setCurrent(current - 1);
+        setDirection('prev');
+        // console.log(`transition: ${transition}, current: ${current}, direction: ${direction}`);
+        // console.log('prev')g
+    };
+
+    const translateVal = () => {
+        let value = -(current * 100)
+        return value;
+    }
+
+    const carouselStyle = () => {
+        console.log(`Move carousel ${ translateVal() }%`)
+        if(transition) {
+            return {
+                transform: `translateX(${ translateVal() }%)`,
+                transition: 'transform .3s ease-in-out'
+            };
         }
         else {
-            setMobile(!isMobile);
+            return {
+                transform: `translateX(${translateVal()}%)`
+            };
         }
-        function checkScreen(e) {
-            if(e.matches) {
-                setMobile(isMobile)
-            }
-            else {
-                setMobile(!isMobile)
-            }
-        }
-        media.addEventListener('change', checkScreen);
-    }, [])
-    const next = () => {
-        setIndex(index < limit - 1 ? index + 1 : 0);
-    };
-    const prev = () => {
-        setIndex(index > 0 ? index - 1 : limit - 1)
-    };
-
-
+    }
+    console.log(carouselStyle());
     return(
         <div className="Carousel">
             <div className="Carousel__inner">
-                <div className="Carousel__slides" style={{ transform: `translateX(${index * -100}%)`}}>
-                    {props.data.map((slide,index) => {
-                        const background = { backgroundImage: isMobile ? `url(${slide.media.mobile})` : `url(${slide.media.desktop})` }
-                        return <Slide key={props.index} index={index} slide={slide} background={background} isMobile={isMobile}/>
+                <div className="Carousel__slides" style={carouselStyle()} onTransitionEnd={handleTranslation}>
+                    {slides.map((slide, index) => {
+                        return <Slide key={index} slide={slide}/>
                     })}
                 </div>
                 <div className="Carousel__controls">
-                    <button type="button" className="Carousel__prev Carousel__btn" onClick={prev}><img src={prevIcon} alt="previous"/></button>
-                    <button type="button" className="Carousel__next Carousel__btn" onClick={next}><img src={nextIcon} alt="previous"/></button>
+                    <button type="button" className="Carousel__prev Carousel__btn" onClick={handlePrev}><img src={prevIcon} alt="previous"/></button>
+                    <button type="button" className="Carousel__next Carousel__btn" onClick={handleNext}><img src={nextIcon} alt="previous"/></button>
                 </div>
             </div>
         </div>
