@@ -2,20 +2,10 @@ import React, { useEffect } from 'react';
 import './Slide.scss';
 
 export const Slide = (props) => {
-    const [isMobile, setMobile] = React.useState(false);
-    useEffect(() => {
-        const media = window.matchMedia('(max-width: 600px)');
-        if(media.matches){
-            setMobile(isMobile => isMobile);
-        }
-        else {
-            setMobile(isMobile => !isMobile);
-        }
-    }, [])
 
     return (
         <div className="Slide" style={{ backgroundImage: `url(${ props.background })`}}>
-            <div className={`${!props.isMobile? 'Slide__inner--' + props.slide.ctaPosition : 'Slide__inner'}`}>
+            <div className={`${ props.isMobile ? 'Slide__inner': 'Slide__inner--' + props.slide.ctaPosition}`}>
             <div className="Slide__content-wrapper">
                 <h1 className="Slide__title">{props.slide.title}</h1>
                 { props.slide.heading && <h6 className="Slide__heading">{props.slide.heading}</h6> }
@@ -25,7 +15,7 @@ export const Slide = (props) => {
                     return (
                         <div className="Slide__cta" key={index.toString()}>
                             <div className="Slide__btn-wrapper">
-                                <a href={cta.url} className="Slide__btn" onMouseOver={ () => console.log(props.index) }>{cta.label}</a>
+                                <a href={cta.url} className="Slide__btn" onMouseEnter={ () => props.setIsRunning(false) } onMouseLeave={ () => props.setIsRunning(true) } >{cta.label}</a>
                             </div>
                         </div>
                     )

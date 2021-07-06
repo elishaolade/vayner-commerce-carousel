@@ -6,12 +6,14 @@ import Slide from './Slide';
 import { checkScreen } from '../utils/carousel-utils';
 
 const Carousel = (props) => {
- 
     const [backgroundType, setBackgroundType] = React.useState('mobile');
     const [slides, setSlides] = useState([]);
     const [index, setIndex] = useState(0);
     const [transition, setTransition] = useState(false);
     const [direction, setDirection] = useState(null);
+    const [isMobile, setIsMobile] = useState(null);
+    const [delay, setDelay] = useState(4000);
+    const [isRunning, setIsRunning] = useState(true);
 
     useEffect(()=>{
         handleResize();
@@ -26,25 +28,29 @@ const Carousel = (props) => {
         }
     }, [props]);
 
+    useInterval(()=> {
+        next()
+    }, isRunning ? delay: null);
+
     const handleResize = () => {
         var mql = window.matchMedia('(max-width: 600px)');
-        setBackgroundType(checkScreen(mql));
+        var _isMobile = checkScreen(mql) ? true : false;
+        var _bgType = _isMobile ? 'mobile':'desktop';
+        setIsMobile(_isMobile);
+        setBackgroundType(_bgType);
+        
     }
 
-    const next = (e) => {
-        e.stopPropagation()
+    const next = () => {
         setDirection('next');
         setTimeout(setIndex(index => index + 1), 1000);
         setTransition(true);
-        console.log('next')
     };
     
-    const prev = (e) => {
-        e.stopPropagation()
+    const prev = () => {
         setDirection('prev');
         setTimeout(setIndex(index => index - 1), 1000);
         setTransition(true);
-        console.log('prev')
     };
 
     const translateIndex = () => {
@@ -66,7 +72,6 @@ const Carousel = (props) => {
     }
 
     const handleTrack = (event) => {
-        console.log(event.target);
         const correctSource = event.target.classList.contains('Carousel__slides');
         if(correctSource) {
             switch (direction) {
@@ -95,8 +100,8 @@ const Carousel = (props) => {
             <div className="Carousel__inner">
                 <div className="Carousel__slides" style={ translateStyle() } onTransitionEnd={ (event) => handleTrack(event) }>
                     {slides.map((slide,index) => {
-                        let background = backgroundType === 'mobile' ? slide.media.mobile:slide.media.desktop;
-                        return <Slide index={index} slide={slide} background={ background }/>
+                        let background = backgroundType === 'mobile' ? slide.media.mobile : slide.media.desktop;
+                        return <Slide key={index} slide={slide} isMobile={isMobile} background={background} setIsRunning={setIsRunning}/>
                     })}
                 </div>
                 <div className="Carousel__controls">
@@ -106,6 +111,23 @@ const Carousel = (props) => {
             </div>
         </div>
     );
+}
+
+const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
+    useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback]);
+
+    useEffect(()=> {
+        function tick() {
+            savedCallback.current();
+        }
+        if(delay != null) {
+            let id = setInterval(tick, delay);
+            return () => clearInterval(id);
+        }
+    }, [delay])
 }
 
 export default Carousel;

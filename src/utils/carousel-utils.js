@@ -1,3 +1,3 @@
 export const checkScreen = function(mediaQueryList) {
-    return mediaQueryList.matches ? 'mobile' : 'desktop'
+    return mediaQueryList.matches ? true : false
 }
