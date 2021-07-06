@@ -105,8 +105,8 @@ const Carousel = (props) => {
                     })}
                 </div>
                 <div className="Carousel__controls">
-                    <button type="button" className="Carousel__prev Carousel__btn" onClick={ prev }><img src={ prevIcon } alt="previous"/></button>
-                    <button type="button" className="Carousel__next Carousel__btn" onClick={ next }><img src={ nextIcon } alt="previous"/></button>
+                    <button type="button" className="Carousel__prev Carousel__btn" onClick={ prev } onMouseOver={ () => setIsRunning(false) } onMouseLeave={ () => setIsRunning(true) }><img src={ prevIcon } alt="previous"/></button>
+                    <button type="button" className="Carousel__next Carousel__btn" onClick={ next } onMouseOver={ () => setIsRunning(false) } onMouseLeave={ () => setIsRunning(true) }><img src={ nextIcon } alt="previous"/></button>
                 </div>
             </div>
         </div>
