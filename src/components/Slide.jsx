@@ -3,28 +3,15 @@ import './Slide.scss';
 
 export const Slide = (props) => {
     const [isMobile, setMobile] = React.useState(false);
-    const [background, setBackground] = React.useState('');
-    const [title, setTitle] = React.useState('');
-    const [heading, setHeading] = React.useState('');
-    const [subhead, setSubhead] = React.useState('');
-    const [ctaPosition, setCtaPosition] = React.useState('');
-    const [cta, setCta] = React.useState([]);
-
     useEffect(() => {
         const media = window.matchMedia('(max-width: 600px)');
-        setTitle(title => props.slide.title)
-        setHeading(heading => props.slide.heading);
-        setSubhead(subhead => props.slide.subhead);
-        setBackground(background => props.background);
-        setCta(cta => props.slide.cta);
-        setCtaPosition(ctaPosition => props.slide.ctaPosition);
         if(media.matches){
             setMobile(isMobile => isMobile);
         }
         else {
             setMobile(isMobile => !isMobile);
         }
-    }, [props])
+    }, [])
 
     return (
         <div className="Slide" style={{ backgroundImage: `url(${ props.background })`}}>
@@ -36,10 +23,9 @@ export const Slide = (props) => {
                 <div className={`Slide__cta-wrapper--${props.slide.cta.length > 1 ? 'double':'single'}`}>
                 { props.slide.cta.map((cta, index) => {
                     return (
-                        <div className="Slide__cta" key={index}>
-                            <h5 className="Slide__label"></h5>
+                        <div className="Slide__cta" key={index.toString()}>
                             <div className="Slide__btn-wrapper">
-                                <a href={cta.url} className="Slide__btn">{cta.label}</a>
+                                <a href={cta.url} className="Slide__btn" onMouseOver={ () => console.log(props.index) }>{cta.label}</a>
                             </div>
                         </div>
                     )
