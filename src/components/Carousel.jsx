@@ -3,40 +3,32 @@ import prevIcon from '.././assets/arrow-left.svg';
 import nextIcon from '.././assets/arrow-right.svg';
 import './Carousel.scss';
 import Slide from './Slide';
+import { checkScreen } from '../utils/carousel-utils';
 
 const Carousel = (props) => {
-    const [isMobile, setMobile] = useState(true);
+ 
+    const [backgroundType, setBackgroundType] = React.useState('mobile');
     const [slides, setSlides] = useState([]);
     const [index, setIndex] = useState(0);
     const [transition, setTransition] = useState(false);
-    const [direction, setDirection] = useState('');
+    const [direction, setDirection] = useState(null);
     const elementRef = useRef();
 
     useEffect(()=>{
-        const media = window.matchMedia('(max-width: 600px)');
-        setSlides(props.data);
+        handleResize();
+        const middle = Math.floor(slides.length / 2) + 1;
         const _slides = props.data;
-        setSlides(_slides);
-        // if(media.matches){
-        //     setMobile(isMobile);
-        // }
-        // else {
-        //     setMobile(!isMobile);
-        // }
-        // function checkScreen(e) {
-        //     if(e.matches) {
-        //         setMobile(isMobile)
-        //     }
-        //     else {
-        //         setMobile(!isMobile)
-        //     }
-        // }
-        // media.addEventListener('change', checkScreen);
+        setSlides(slides => [..._slides.slice(-middle), ..._slides.slice(0), ..._slides.slice(middle)].slice(0, _slides.length));
+        setIndex(Math.floor(middle));
+        window.addEventListener('resize', handleResize);
         console.log(elementRef);
         console.log('useEffect');
-    }, [props])
+    }, [props]);
 
-
+    const handleResize = () => {
+        var mql = window.matchMedia('(max-width: 600px)');
+        setBackgroundType(checkScreen(mql));
+    }
 
     const next = () => {
         setDirection('next');
@@ -48,6 +40,7 @@ const Carousel = (props) => {
         setDirection('prev');
         setIndex(index => index - 1);
         setTransition(true);
+        console.log(slides)
     };
 
     const translateIndex = () => {
@@ -68,10 +61,6 @@ const Carousel = (props) => {
         }
     }
 
-    const handlePrev = () => {
-        
-    }
-
     const handleTrack = () => {
         switch (direction) {
             case 'next': 
@@ -85,19 +74,24 @@ const Carousel = (props) => {
                 setIndex(index => Math.ceil(slides.length / 2) -1)
                 console.log(slides);
                 break;
-            default:
+            case '':
+                setTransition(false);
+                // const middle = Math.floor(slides.length / 2) + 1;
+                // setSlides(slides => [...slides.slice(-middle), ...slides.slice(0), ...slides.slice(middle)].slice(0, slides.length));
+                // console.log(slides);
+                // setIndex(Math.floor(middle));
                 break;
         }
     }
-
 
     return(
         <div className="Carousel">
             <div className="Carousel__inner">
                 <div className="Carousel__slides" style={ translateStyle() } onTransitionEnd={ handleTrack } ref={elementRef}>
                     {slides.map((slide,index) => {
-                        const background = { backgroundImage: isMobile ? `url(${slide.media.mobile})` : `url(${slide.media.desktop})` }
-                        return <Slide key={index} slide={slide} background={background} isMobile={isMobile}/>
+                        // const background = { backgroundImage: isMobile ? `url(${slide.media.mobile})` : `url(${slide.media.desktop})` }
+                        let background = backgroundType === 'mobile' ? slide.media.mobile:slide.media.desktop;
+                        return <Slide key={index} slide={slide} background={background}/>
                     })}
                 </div>
                 <div className="Carousel__controls">

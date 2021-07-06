@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Slide.scss';
 
 export const Slide = (props) => {
+    const [isMobile, setMobile] = React.useState(false);
+    const [background, setBackground] = React.useState('');
+    const [title, setTitle] = React.useState('');
+    const [heading, setHeading] = React.useState('');
+    const [subhead, setSubhead] = React.useState('');
+    const [ctaPosition, setCtaPosition] = React.useState('');
+    const [cta, setCta] = React.useState([]);
+
+    useEffect(() => {
+        const media = window.matchMedia('(max-width: 600px)');
+        setTitle(title => props.slide.title)
+        setHeading(heading => props.slide.heading);
+        setSubhead(subhead => props.slide.subhead);
+        setBackground(background => props.background);
+        setCta(cta => props.slide.cta);
+        setCtaPosition(ctaPosition => props.slide.ctaPosition);
+        if(media.matches){
+            setMobile(isMobile => isMobile);
+        }
+        else {
+            setMobile(isMobile => !isMobile);
+        }
+    }, [props])
+
     return (
-        <div className="Slide" style={props.background}>
+        <div className="Slide" style={{ backgroundImage: `url(${ props.background })`}}>
             <div className={`${!props.isMobile? 'Slide__inner--' + props.slide.ctaPosition : 'Slide__inner'}`}>
             <div className="Slide__content-wrapper">
                 <h1 className="Slide__title">{props.slide.title}</h1>
